@@ -1,0 +1,36 @@
+.dropdown {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+  }
+
+  ul {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: white;
+    border-top: none;
+    width: 300px;
+    box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+
+  ul.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  li {
+    padding: 8px;
+  }
+
+  li:hover{
+    background-color: lightsteelblue;
+  }
+  
+  .selected-option {
+    padding: 8px;
+  }

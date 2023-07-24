@@ -14,22 +14,25 @@ export class QuizMakerComponent {
   subcategories: CategoryItem[] = [];
   selectedCategory: Category | null = null;
   selectedSubcategory: CategoryItem | null =null;
-
+  categoryId: string = ''
+  newQuizCreated = false
+  
   constructor(protected quizService: QuizService) {
     this.categories$ = quizService.getAllCategories();
   }
 
   createQuiz(difficulty: string): void {
-    const cat: string= this.selectedSubcategory ? `${this.selectedSubcategory?.id}` : `${this.selectedCategory?.id}`
-    this.questions$ = this.quizService.createQuiz(cat, difficulty as Difficulty);
+    this.categoryId= this.selectedSubcategory ? `${this.selectedSubcategory?.id}` : `${this.selectedCategory?.id}`
+    this.questions$ = this.quizService.createQuiz(this.categoryId, difficulty as Difficulty);
+    this.newQuizCreated = true;
   }
 
-  onCategoryChange(): void {
-    if (this.selectedCategory) {
-      this.subcategories = this.selectedCategory.subcategories;
-    } else {
-      this.subcategories = [];
-    }
+  onCategoryChange(category:Category): void {
+    this.subcategories = category.subcategories;
+    this.selectedCategory = category;
   }
 
+  onSubcategoryChange(subcategory:CategoryItem){
+    this.selectedSubcategory = subcategory
+  }
 }

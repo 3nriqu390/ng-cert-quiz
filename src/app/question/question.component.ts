@@ -14,7 +14,17 @@ export class QuestionComponent {
   correctAnswer?: string;
   @Input()
   userAnswer?: string;
+  @Input()
+  questionChanged: boolean = false
 
+  @Output()
+  newQuestion = new EventEmitter<void>();
+
+  @Output()
+  change = new EventEmitter<string>();
+
+  currentSelection!: string;
+  
   getButtonClass(answer: string): string {
     if (! this.userAnswer) {
         if (this.currentSelection == answer)
@@ -28,13 +38,12 @@ export class QuestionComponent {
     return "primary";
   }
 
-  @Output()
-  change = new EventEmitter<string>();
-
-  currentSelection!: string;
-
   buttonClicked(answer: string): void {
     this.currentSelection = answer;
     this.change.emit(answer);
+  }
+
+  changedClicked(){
+    this.newQuestion.emit()
   }
 }
