@@ -1,6 +1,16 @@
 export interface Category {
   id: number;
-  name: string;
+  category: string;
+  subcategories: CategoryItem[];
+}
+
+export interface CategoryResponse {
+  trivia_categories: CategoryItem[];
+}
+
+export interface CategoryItem{
+  name:string;
+  id:number
 }
 
 export interface ApiQuestion {

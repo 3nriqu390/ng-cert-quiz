@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
-import {Category, Difficulty, ApiQuestion, Question, Results} from './data.models';
+import {Category, Difficulty, ApiQuestion, Question, Results, CategoryResponse} from './data.models';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +15,33 @@ export class QuizService {
   }
 
   getAllCategories(): Observable<Category[]> {
-    return this.http.get<{ trivia_categories: Category[] }>(this.API_URL + "api_category.php").pipe(
-      map(res => res.trivia_categories)
+    return this.http.get<CategoryResponse>(this.API_URL + "api_category.php").pipe(
+      map((response: CategoryResponse) => {
+        const categoriesMap = new Map<string, Category>();
+  
+        response.trivia_categories.forEach((categoryObj) => {
+          const [category, subcategory] = categoryObj.name.split(":").map((str) => str.trim());
+           
+          if (categoriesMap.has(category)) {
+            const existingCategory = categoriesMap.get(category);
+            if (existingCategory) {
+              existingCategory.subcategories.push({name:subcategory, id: Number(categoryObj.id)});
+            }
+          } else {
+            categoriesMap.set(category, {
+              id: categoryObj.id,
+              category,
+              subcategories: subcategory ? [{name:subcategory, id: Number(categoryObj.id)}] : [],
+            });
+          }
+        });
+  
+        console.log("Map", categoriesMap)
+        return Array.from(categoriesMap.values());
+      })
     );
   }
+  
 
   createQuiz(categoryId: string, difficulty: Difficulty): Observable<Question[]> {
     return this.http.get<{ results: ApiQuestion[] }>(

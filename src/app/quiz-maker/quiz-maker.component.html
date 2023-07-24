@@ -1,18 +1,27 @@
 <div class="row">
   <div class="col-sm-11">
-    <select #category id="categorySelect">
-      <option>Select category</option>
-      <option [value]="category.id" *ngFor="let category of categories$ | async">
-        {{category.name}}
+    <select #categorySelect id="categorySelect"  [(ngModel)]="selectedCategory" (change)="onCategoryChange()">
+      <option [ngValue]="null">Select category</option>
+      <option [ngValue]="category" *ngFor="let category of categories$ | async">
+        {{ category.category }}
       </option>
     </select>
+    
+    <!-- Display the second select only when selectedCategory has a value -->
+    <select *ngIf="(selectedCategory?.subcategories?.length || 0) > 0" [(ngModel)]="selectedSubcategory" #subCategorySelect id="subCategorySelect">
+      <option [ngValue]="null">Select Sub-Category</option>
+      <option *ngFor="let subcategory of selectedCategory?.subcategories" [ngValue]="subcategory">
+        {{ subcategory.name }}
+      </option>
+    </select>
+    
     <select #difficulty id="difficultySelect">
       <option>Select difficulty</option>
       <option>Easy</option>
       <option>Medium</option>
       <option>Hard</option>
     </select>
-    <button class="primary" id="createBtn" (click)="createQuiz(category.value, difficulty.value)">Create</button>
+    <button class="primary" id="createBtn" (click)="createQuiz(difficulty.value)">Create</button>
   </div>
 
 </div>
