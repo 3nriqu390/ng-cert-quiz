@@ -38,22 +38,21 @@ export class DropdownComponent implements OnInit{
     this.showDropdown = false;
   }
 
-  filterOptions(event:any): void {
-    const searchText: string = event.value
+  filterOptions(event: any): void {
+    const searchText: string = event.value;
     if (!searchText || searchText.trim() === '') {
-      this.filteredOptions = this.options ?? [];
+        this.filteredOptions = this.options ?? [];
     } else {
-      this.filteredOptions = this.options?.map((option) => {
-        const matchIndex = option[this.filterAttribute].toLowerCase().indexOf(searchText.toLowerCase());
-        if (matchIndex !== -1) {
-          const matchedText = option[this.filterAttribute].substring(matchIndex, matchIndex + searchText.length);
-          const boldText = `<strong>${matchedText}</strong>`;
-          const formattedOption = option[this.filterAttribute].replace(new RegExp(searchText, 'gi'), boldText);
-          return { ...option, formattedName: formattedOption };
-        } else {
-          return { ...option, formattedName: option[this.filterAttribute] };
-        }
-      }) ?? [];
+        this.filteredOptions = this.options?.filter((option) => {
+            const matchIndex = option[this.filterAttribute].toLowerCase().indexOf(searchText.toLowerCase());
+            return matchIndex !== -1;
+        }).map((option) => {
+            const regex = new RegExp(searchText, 'gi');
+            const formattedOption = option[this.filterAttribute].replace(regex, (matched:string) => `<strong>${matched}</strong>`);
+            return { ...option, formattedName: formattedOption };
+        }) ?? [];
     }
   }
+
+
 }
