@@ -1,5 +1,5 @@
 <div class="dropdown" (click)="showOptions()" (mouseleave)="hideOptions()">
-    <input type="text" (keyup)="filterOptions($event.target)" [value]="searchText">
+    <input type="text" (keyup)="filterOptions()" [(ngModel)]="searchText">
     <ul *ngIf="showDropdown">
       <li *ngFor="let option of filteredOptions" (click)="onOptionSelect($event, option)">
         <div *ngIf="!option['formattedName']"> {{ option[filterAttribute] }}</div>

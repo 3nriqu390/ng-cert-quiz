@@ -12,15 +12,15 @@ export class DropdownComponent implements OnInit{
   selectedOption: CategoryType | undefined;
   showDropdown: boolean = false;
   filteredOptions?: CategoryType[] | null = [];
-  searchText: string = '';
+  searchText?: string = '';
   @Output()
-  selected = new EventEmitter<any>()
+  selected = new EventEmitter<CategoryType>()
 
   ngOnInit(): void {
     this.filteredOptions = this.options;
   }
 
-  onOptionSelect(event: Event, option: any): void {
+  onOptionSelect(event: Event, option: CategoryType): void {
     event.stopPropagation();
     this.selectedOption = option;
     this.showDropdown = false;
@@ -39,16 +39,16 @@ export class DropdownComponent implements OnInit{
     this.showDropdown = false;
   }
 
-  filterOptions(event: any): void {
-    const searchText: string = event.value;
-    if (!searchText || searchText.trim() === '') {
+  filterOptions(): void {
+    console.log('Search text',this.searchText)
+    if (!this.searchText || this.searchText.trim() === '') {
         this.filteredOptions = this.options ?? [];
     } else {
         this.filteredOptions = this.options?.filter((option) => {
-            const matchIndex = option[this.filterAttribute].toLowerCase().indexOf(searchText.toLowerCase());
+            const matchIndex = option[this.filterAttribute].toLowerCase().indexOf(this.searchText?.toLowerCase());
             return matchIndex !== -1;
         }).map((option) => {
-            const regex = new RegExp(searchText, 'gi');
+            const regex = new RegExp(this.searchText as string, 'gi');
             const formattedOption = option[this.filterAttribute].replace(regex, (matched:string) => `<strong>${matched}</strong>`);
             return { ...option, formattedName: formattedOption };
         }) ?? [];

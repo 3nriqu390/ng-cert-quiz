@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Category, CategoryItem, Difficulty, Question} from '../data.models';
+import {Category, CategoryItem, CategoryType, Difficulty, Question} from '../data.models';
 import {Observable} from 'rxjs';
 import {QuizService} from '../quiz.service';
 
@@ -27,12 +27,12 @@ export class QuizMakerComponent {
     this.newQuizCreated = true;
   }
 
-  onCategoryChange(category:Category): void {
+  onCategoryChange(category:CategoryType): void {
     this.subcategories = category.subcategories;
-    this.selectedCategory = category;
+    this.selectedCategory = category as Category;
   }
 
-  onSubcategoryChange(subcategory:CategoryItem){
-    this.selectedSubcategory = subcategory
+  onSubcategoryChange(subcategory:CategoryType){
+    this.selectedSubcategory = subcategory as CategoryItem
   }
 }
