@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CategoryType } from '../data.models';
 
 @Component({
   selector: 'app-dropdown',
@@ -6,11 +7,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./dropdown.component.css']
 })
 export class DropdownComponent implements OnInit{
-  @Input() options?: any[] | null = [];
-  @Input() filterAttribute: string = ''; // Attribute to use for filtering
-  selectedOption: any | undefined;
+  @Input() options?: CategoryType[] | null = [];
+  @Input() filterAttribute: string = '';
+  selectedOption: CategoryType | undefined;
   showDropdown: boolean = false;
-  filteredOptions?: any[] | null = [];
+  filteredOptions?: CategoryType[] | null = [];
   searchText: string = '';
   @Output()
   selected = new EventEmitter<any>()

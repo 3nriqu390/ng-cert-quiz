@@ -1,4 +1,7 @@
-export interface Category {
+interface BaseCategory {
+  [key: string]: any;
+}
+export interface Category extends BaseCategory {
   id: number;
   category: string;
   subcategories: CategoryItem[];
@@ -8,10 +11,12 @@ export interface CategoryResponse {
   trivia_categories: CategoryItem[];
 }
 
-export interface CategoryItem{
+export interface CategoryItem extends BaseCategory{
   name:string;
   id:number
 }
+
+export type CategoryType = Category | CategoryItem
 
 export interface ApiQuestion {
   category: string;
